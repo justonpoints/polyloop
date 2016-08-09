@@ -1,0 +1,53 @@
+<dom-module id="loopback-get-record">
+  <template>
+    <style>
+    </style>
+
+    <iron-ajax
+      id="get"
+      url="/api/{{model}}/{{item_id}}"
+      params = "{{params}}"
+      handle-as="json"
+      last-response="{{response}}"
+      on-response="returned"
+      debounce-duration="300"
+    ></iron-ajax>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'loopback-get-record',
+      properties: {
+        model:{
+          type:String,
+          notify:true
+        },
+        item_id:{
+          type:Number,
+          notify:true
+        },
+        params:{
+          type:Object,
+          notify:true
+        },
+        response:{
+          type:Object,
+          notify:true
+        },
+        eventName:{
+          type:String,
+          notify:true,
+          value:"requestReturned"
+        }
+      },
+      send:function(){
+        console.log("id:",this.item_id);
+        this.$.get.generateRequest();
+      },
+      returned:function(event){
+        this.fire(this.eventName,event.detail.response);
+      }
+    });
+  </script>
+</dom-module>
